@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueNest Technologies | Where Ideas Become Value</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy-900: #070d1d;
+            --navy-800: #0b132b;
+            --navy-700: #1c2541;
+            --gold-400: #f1c40f;
+            --gold-500: #d4af37;
+            --gold-600: #aa820a;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--navy-900);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--navy-900); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-500); border-radius: 4px; }
+
+        /* Header / Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 13, 29, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand img { height: 48px; width: auto; }
+        .brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: 0.04em; color: #ffffff; white-space: nowrap; text-transform: none; }
+        .brand-tagline { font-size: 9px; letter-spacing: 0.15em; color: var(--gold-400); text-transform: uppercase; }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav ul a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav ul a:hover { color: var(--gold-400); }
+
+        .btn-connect {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+            color: var(--navy-900);
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-connect:hover { transform: scale(1.05); }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+            background: radial-gradient(circle at top, var(--navy-700), var(--navy-900));
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.4;
+        }
+
+        .hero-content { max-width: 900px; position: relative; z-index: 2; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold-400);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #ffffff, var(--gold-400), var(--gold-600));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-weight: 300;
+        }
+
+        .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+            color: var(--navy-900);
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            background: rgba(28, 37, 65, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--gold-400);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); }
+
+        /* Stats Counter Bar */
+        .stats-bar {
+            background: var(--navy-800);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 4rem 2rem;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-box h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--gold-400);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        /* Section Layouts */
+        section { padding: 7rem 2rem; max-width: 1280px; margin: 0 auto; }
+
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+        .section-header span { color: var(--gold-400); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 0.75rem; }
+        .section-header h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
+        .section-header p { color: var(--text-muted); font-size: 1rem; }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            background: rgba(11, 19, 43, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 24px;
+            padding: 4rem;
+        }
+
+        .about-text p { color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.8; }
+        .about-card {
+            background: #000e23;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 0.75rem 0.75rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .about-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 1.25rem;
+        }
+
+        /* Domains Grid */
+        .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .domain-card {
+            background: var(--navy-800);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        .domain-card:hover { border-color: rgba(212, 175, 55, 0.6); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        .domain-icon {
+            width: 60px; height: 60px; border-radius: 12px;
+            background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold-400); font-size: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s;
+        }
+        .domain-card:hover .domain-icon { background: var(--gold-500); color: var(--navy-900); }
+        .domain-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+        .domain-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Ecosystem Ventures */
+        .ecosystem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .venture-card {
+            background: var(--navy-900); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column;
+            justify-content: space-between; transition: transform 0.3s;
+        }
+        .venture-card:hover { transform: translateY(-4px); border-color: var(--gold-400); }
+        .venture-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .venture-title { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.75rem; }
+        .venture-title img {
+            width: 56px; height: 56px; object-fit: contain; flex-shrink: 0;
+            border-radius: 12px; background: #f7f4ee; padding: 4px;
+        }
+        .venture-title h3 { margin: 0; font-size: 1.35rem; }
+        .venture-arrow {
+            color: var(--gold-400); text-decoration: none;
+            width: 36px; height: 36px; border-radius: 10px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+        }
+        .venture-arrow:hover { color: #ffffff; border-color: var(--gold-400); }
+        .tag-active { padding: 0.3rem 0.8rem; border-radius: 20px; background: rgba(212, 175, 55, 0.15); color: var(--gold-400); font-size: 0.75rem; font-weight: 600; }
+        .tag-tbd { padding: 0.3rem 0.8rem; border-radius: 20px; background: rgba(100, 116, 139, 0.2); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; }
+        .venture-card h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+        .venture-card .venture-title h3 { margin: 0; }
+        .venture-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+        .venture-link { color: var(--gold-400); text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; }
+        .venture-link:hover { color: #ffffff; }
+
+        /* Brand Partners Section */
+        .partners-section { background: var(--navy-800); border-top: 1px solid rgba(212, 175, 55, 0.15); border-bottom: 1px solid rgba(212, 175, 55, 0.15); padding: 2.25rem 0 1.75rem; overflow: hidden; }
+        .partners-section .section-header { padding: 0 2rem; margin-bottom: 1.15rem; }
+        .partners-marquee { overflow: hidden; width: 100%; padding: 0.35rem 0; }
+        .partners-track {
+            display: flex; width: max-content;
+            animation: scroll 125s linear infinite;
+        }
+        .partners-set { display: flex; gap: 1rem; padding-right: 1rem; }
+        .partners-marquee:hover .partners-track { animation-play-state: paused; }
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .partner-card {
+            flex: 0 0 132px; width: 132px;
+            background: var(--navy-900); border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 14px; padding: 0.7rem 0.55rem 0.55rem; text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .partner-card img {
+            height: 32px; max-width: 84%; object-fit: contain; opacity: 0.88;
+            transition: opacity 0.3s ease;
+        }
+        .partner-card img.mark-light { filter: brightness(0) invert(1); }
+        .partner-card span {
+            display: block; margin-top: 0.4rem; font-size: 0.6rem; letter-spacing: 0.05em;
+            color: var(--text-muted); text-transform: uppercase;
+        }
+        .partner-card:hover {
+            border-color: var(--gold-400);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28), 0 0 18px rgba(212, 175, 55, 0.38);
+        }
+        .partner-card:hover img { opacity: 1; }
+        @media (prefers-reduced-motion: reduce) {
+            .partners-track { animation: none; }
+            .partners-marquee { overflow-x: auto; }
+        }
+
+        /* Testimonials Section */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .testimonial-card {
+            background: var(--navy-800); border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .testimonial-text {
+            color: var(--text-muted); font-size: 0.95rem; font-style: italic;
+            margin-bottom: 2rem; max-height: 150px; overflow-x: hidden; overflow-y: auto;
+            padding-right: 0.75rem; scrollbar-gutter: stable;
+        }
+        .testimonial-text::-webkit-scrollbar { width: 8px; }
+        .testimonial-text::-webkit-scrollbar-track { background: transparent; }
+        .testimonial-text::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.55); border-radius: 8px;
+        }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .author-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-400); }
+        .author-info h4 { font-size: 1rem; font-weight: 700; color: #ffffff; }
+        .author-info p { font-size: 0.8rem; color: var(--gold-400); }
+
+        /* Contact Section */
+        .contact-box {
+            background: linear-gradient(135deg, var(--navy-800), var(--navy-900));
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 24px; padding: 4rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .contact-info p { color: var(--text-muted); margin-bottom: 2rem; }
+        .contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: var(--text-main); }
+        .contact-icon {
+            width: 44px; height: 44px; border-radius: 50%; background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3); display: flex; align-items: center; justify-content: center; color: var(--gold-400);
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .form-control {
+            width: 100%; padding: 0.9rem 1.25rem; border-radius: 12px; background: var(--navy-900);
+            border: 1px solid rgba(212, 175, 55, 0.2); color: #ffffff; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--gold-400); }
+        #form-success { display: none; margin-top: 1rem; padding: 1rem; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; color: #2ecc71; border-radius: 8px; font-size: 0.9rem; text-align: center; }
+
+        /* Footer */
+        footer { border-top: 1px solid rgba(212, 175, 55, 0.2); padding: 3rem 2rem; background: var(--navy-900); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+        .footer-content { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+
+        .empty-note {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-muted);
+            border: 1px dashed rgba(212, 175, 55, 0.35);
+            border-radius: 20px;
+            padding: 2.5rem 1.5rem;
+            background: rgba(11, 19, 43, 0.45);
+        }
+        .avatar-fallback {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: grid; place-items: center;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-400); font-weight: 800;
+            border: 2px solid var(--gold-400);
+        }
+        .nav-toggle {
+            display: none;
+            width: 46px; height: 46px; border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            background: var(--navy-800); color: var(--gold-400); cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            .about-grid, .contact-box { grid-template-columns: 1fr; padding: 2.5rem; }
+            .nav-toggle { display: grid; place-items: center; }
+            .brand-title { font-size: 0.72rem; letter-spacing: 0.02em; }
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px; left: 1rem; right: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.4rem;
+                padding: 1rem;
+                background: rgba(11, 19, 43, 0.96);
+                border: 1px solid rgba(212, 175, 55, 0.25);
+                border-radius: 16px;
+            }
+            nav ul.is-open { display: flex; z-index: 1001; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <img src="assets/ValueNest Final LOGO.png" alt="ValueNest Logo">
+                <div class="brand-text">
+                    <span class="brand-title">ValueNest Technologies</span>
+                    <span class="brand-tagline">Where Ideas Become Value</span>
+                </div>
+            </a>
+            
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <nav>
+                <ul id="site-nav">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#domains">Domains</a></li>
+                    <li><a href="#ecosystem">Ecosystem</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact" class="btn-connect">Connect</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <i class="fa-solid fa-shield-halved"></i> Excellence Since 2021
+            </div>
+            <h1>
+                Engineered for Scale. <br>
+                <span>Where Ideas Become Value.</span>
+            </h1>
+            <p>
+                ValueNest Technologies is a premier global innovation powerhouse pioneering enterprise solutions across Corporate Gifting, Advanced Software, FinTech, HRTech, and E-Commerce.
+            </p>
+            <div class="hero-btns">
+                <a href="#ecosystem" class="btn-primary">
+                    Explore Ecosystem <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#contact" class="btn-secondary">
+                    Partner With Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dynamic Counters Section -->
+    <div class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-box">
+                <h2 class="counter" data-target="40">0</h2>
+                <p>Countries Reached</p>
+            </div>
+            <div class="stat-box">
+                <h2 class="counter" data-target="300">0</h2>
+                <p>Enterprise Companies</p>
+            </div>
+            <div class="stat-box">
+                <h2 class="counter" data-target="75000">0</h2>
+                <p>Customers Catered</p>
+            </div>
+            <div class="stat-box">
+                <h2 class="counter" data-target="8">0</h2>
+                <p>Ecosystem Ventures</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text">
+                <span style="color: var(--gold-400); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 0.75rem;">Enterprise Heritage</span>
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem;">Pioneering Digital Transformation Since 2021</h2>
+                <p>
+                    Established in 2021, ValueNest Technologies has evolved into a trusted technological anchor for enterprises worldwide. We fuse uncompromising engineering rigor with high-impact design thinking to deliver category-defining platforms.
+                </p>
+            </div>
+            <div class="about-card">
+                <img src="assets/ValueNest Final LOGO.png" alt="ValueNest Crest">
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">ValueNest Technologies</h3>
+                <p style="color: var(--gold-400); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">ValueVentureCorp Group</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Domains Section -->
+    <section id="domains">
+        <div class="section-header">
+            <span>Core Expertise</span>
+            <h2>Our Primary Domains</h2>
+            <p>Specialized industry verticals where we drive market leadership and technological superiority.</p>
+        </div>
+
+        <div class="domains-grid">
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-gift"></i></div>
+                <h3>Corporate Gifting</h3>
+                <p>End-to-end automated gifting logistics, curated brand experiences, and customized reward ecosystems.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-code"></i></div>
+                <h3>Software Development</h3>
+                <p>High-performance custom enterprise architectures, scalable cloud infrastructure, and rigorous UAT-tested API integrations.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                <h3>App Development</h3>
+                <p>Native and cross-platform Android & iOS mobile applications engineered for sleek UI/UX, speed, and seamless device integration.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-wallet"></i></div>
+                <h3>FinTech Solutions</h3>
+                <p>Secure transaction gateways, automated financial processing, and robust compliance frameworks.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-users-gear"></i></div>
+                <h3>HRTech & Workforce</h3>
+                <p>Advanced talent acquisition engines, employee engagement portals, and workforce management platforms.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                <h3>E-Commerce</h3>
+                <p>Scalable digital storefronts, multi-vendor marketplace architectures, and seamless checkout integrations.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>MarTech & Decision Intelligence</h3>
+                <p>Advanced digital marketing automation, partner affiliate growth systems, and financial decision intelligence platforms.</p>
+            </div>
+            <div class="domain-card">
+                <div class="domain-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <h3>Growth & Affiliate Systems</h3>
+                <p>High-performance partner affiliate networks, growth automation engines, and scalable digital customer acquisition pipelines.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Ventures Section -->
+    <section id="ecosystem" style="background: rgba(11, 19, 43, 0.4); border-top: 1px solid rgba(212, 175, 55, 0.15); border-bottom: 1px solid rgba(212, 175, 55, 0.15);">
+        <div class="section-header">
+            <span>Venture Portfolio</span>
+            <h2>Our Ecosystem Projects</h2>
+            <p>Discover specialized platforms managed under the ValueNest umbrella.</p>
+        </div>
+
+        <div class="ecosystem-grid">
+            <div class="venture-card">
+                <div>
+                    <div class="venture-header">
+                        <span class="tag-active">Active Portal</span>
+                        <a class="venture-arrow" href="https://giftinggo.in" target="_blank" rel="noopener noreferrer" aria-label="Open GiftingGo">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <div class="venture-title">
+                        <img src="assets/giftinggo-logo.png" alt="">
+                        <h3>GiftingGo.in</h3>
+                    </div>
+                    <p>Elite corporate gifting solutions, customized voucher experiences, and promotional reward logistics.</p>
+                </div>
+                <a href="https://giftinggo.in" target="_blank" rel="noopener noreferrer" class="venture-link">Visit Platform <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></a>
+            </div>
+
+            <div class="venture-card">
+                <div>
+                    <div class="venture-header">
+                        <span class="tag-active">Active Portal</span>
+                        <a class="venture-arrow" href="https://signalwave.in" target="_blank" rel="noopener noreferrer" aria-label="Open SignalWave">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <div class="venture-title">
+                        <img src="assets/signalwave-logo.png" alt="">
+                        <h3>SignalWave.in</h3>
+                    </div>
+                    <p>Advanced digital marketing automation, partner affiliate programs, and high-impact media production suites.</p>
+                </div>
+                <a href="https://signalwave.in" target="_blank" rel="noopener noreferrer" class="venture-link">Visit Platform <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></a>
+            </div>
+
+            <div class="venture-card">
+                <div>
+                    <div class="venture-header">
+                        <span class="tag-active">Active Portal</span>
+                        <a class="venture-arrow" href="https://hastveda.co" target="_blank" rel="noopener noreferrer" aria-label="Open HastVeda">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <div class="venture-title">
+                        <img src="assets/hastveda-logo.png" alt="" style="background: #ffffff; padding: 6px; border-radius: 10px;">
+                        <h3>HastVeda.co</h3>
+                    </div>
+                    <p>Artisanal heritage preservation, handcrafted authentic lifestyle goods, and curated cultural commerce.</p>
+                </div>
+                <a href="https://hastveda.co" target="_blank" rel="noopener noreferrer" class="venture-link">Visit Platform <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></a>
+            </div>
+
+            <div class="venture-card">
+                <div>
+                    <div class="venture-header">
+                        <span class="tag-active">Active Portal</span>
+                        <a class="venture-arrow" href="https://shatipoorti.com" target="_blank" rel="noopener noreferrer" aria-label="Open Shatipoorti Solutions">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <div class="venture-title">
+                        <img src="assets/shatipoorti-logo.png" alt="">
+                        <h3>Shatipoorti Solutions</h3>
+                    </div>
+                    <p>Enterprise recovery solutions, claim settlement optimization, and specialized financial advisory frameworks.</p>
+                </div>
+                <a href="https://shatipoorti.com" target="_blank" rel="noopener noreferrer" class="venture-link">Visit Platform <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></a>
+            </div>
+
+            <div class="venture-card" style="border-color: rgba(100, 116, 139, 0.3);">
+                <div>
+                    <div class="venture-header"><span class="tag-tbd">TBD / Incubating</span></div>
+                    <h3>Think Business Labs</h3>
+                    <p>Startup incubation lab focused on rapid prototype testing and venture acceleration.</p>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Coming Soon</span>
+            </div>
+
+            <div class="venture-card" style="border-color: rgba(100, 116, 139, 0.3);">
+                <div>
+                    <div class="venture-header"><span class="tag-tbd">TBD / Incubating</span></div>
+                    <h3>VVerify</h3>
+                    <p>Next-generation trust verification mechanisms.</p>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Coming Soon</span>
+            </div>
+
+            <div class="venture-card" style="border-color: rgba(100, 116, 139, 0.3);">
+                <div>
+                    <div class="venture-header"><span class="tag-tbd">TBD / Incubating</span></div>
+                    <h3>SAATHI</h3>
+                    <p>AI-assisted community empowerment platform.</p>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Coming Soon</span>
+            </div>
+
+            <div class="venture-card" style="border-color: rgba(100, 116, 139, 0.3);">
+                <div>
+                    <div class="venture-header"><span class="tag-tbd">TBD / Incubating</span></div>
+                    <h3>Enterprise Relationship OS</h3>
+                    <p>Enterprise relationship management and automated client engagement operating system.</p>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Coming Soon</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Partners Section -->
+    <div class="partners-section">
+            <div class="section-header" style="margin-bottom: 1.15rem;">
+            <span>Global Ecosystem Network</span>
+            <h2>Our Brand Partners & Associates</h2>
+            <p>Trusted brand partners integrated across our GiftingGo and enterprise reward ecosystem.</p>
+        </div>
+        <div class="partners-marquee" id="partners-marquee">
+            <div class="partners-track" id="partners-track"></div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var brands = [
+                { name: "Amazon Pay", domain: "amazon.in", logo: "assets/partners/amazonpay.svg", light: true },
+                { name: "Flipkart", domain: "flipkart.com", logo: "assets/partners/flipkart.png", light: false },
+                { name: "Myntra", domain: "myntra.com", logo: "assets/partners/myntra.png", light: false },
+                { name: "Croma", domain: "croma.com", logo: "assets/partners/croma.png", light: false },
+                { name: "Swiggy", domain: "swiggy.com", logo: "assets/partners/swiggy.svg", light: true },
+                { name: "Zomato", domain: "zomato.com", logo: "assets/partners/zomato.svg", light: true },
+                { name: "Apple", domain: "apple.com", logo: "assets/partners/apple.svg", light: true },
+                { name: "BigBasket", domain: "bigbasket.com", logo: "assets/partners/bigbasket.svg", light: true },
+                { name: "Tanishq", domain: "tanishq.co.in", logo: "assets/partners/tanishq.svg", light: true },
+                { name: "Kalyan Jewellers", domain: "kalyanjewellers.com", logo: "assets/partners/kalyan.svg", light: false },
+                { name: "MakeMyTrip", domain: "makemytrip.com", logo: "assets/partners/makemytrip-icon.png", light: false },
+                { name: "Nykaa", domain: "nykaa.com", logo: "assets/partners/nykaa-icon.png", light: false },
+                { name: "Uber", domain: "uber.com", logo: "assets/partners/uber.svg", light: true },
+                { name: "PVR", domain: "pvrcinemas.com", logo: "assets/partners/pvr-icon.png", light: false },
+                { name: "Adidas", domain: "adidas.com", logo: "assets/partners/adidas.svg", light: true },
+                { name: "Air India", domain: "airindia.com", logo: "assets/partners/airindia.svg", light: true },
+                { name: "Bata", domain: "bata.com", logo: "assets/partners/bata.svg", light: true },
+                { name: "boAt", domain: "boat-lifestyle.com", logo: "assets/partners/boat.svg", light: true },
+                { name: "BookMyShow", domain: "bookmyshow.com", logo: "assets/partners/bookmyshow.svg", light: true },
+                { name: "Chicco", domain: "chicco.in", logo: "assets/partners/chicco.svg", light: false },
+                { name: "EaseMyTrip", domain: "easemytrip.com", logo: "assets/partners/easemytrip.svg", light: false },
+                { name: "Fabindia", domain: "fabindia.com", logo: "assets/partners/fabindia.svg", light: false },
+                { name: "Hamleys", domain: "hamleys.com", logo: "assets/partners/hamleys.png", light: false },
+                { name: "IKEA", domain: "ikea.com", logo: "assets/partners/ikea.svg", light: true },
+                { name: "ITC Hotels", domain: "itchotels.com", logo: "assets/partners/itc-hotels.svg", light: false },
+                { name: "JioMart", domain: "jiomart.com", logo: "assets/partners/jiomart.svg", light: false },
+                { name: "KFC", domain: "kfc.com", logo: "assets/partners/kfc.svg", light: true },
+                { name: "Marriott", domain: "marriott.com", logo: "assets/partners/marriott.svg", light: true },
+                { name: "McDonald's", domain: "mcdonalds.com", logo: "assets/partners/mcdonalds.svg", light: true },
+                { name: "PhonePe", domain: "phonepe.com", logo: "assets/partners/phonepe.svg", light: true },
+                { name: "Puma", domain: "puma.com", logo: "assets/partners/puma.svg", light: true },
+                { name: "Shell", domain: "shell.com", logo: "assets/partners/shell.svg", light: true },
+                { name: "Starbucks", domain: "starbucks.com", logo: "assets/partners/starbucks.svg", light: true },
+                { name: "Taco Bell", domain: "tacobell.com", logo: "assets/partners/tacobell.svg", light: true },
+                { name: "The Leela", domain: "theleela.com", logo: "assets/partners/the-leela.svg", light: true },
+                { name: "Ajio", domain: "ajio.com", logo: "assets/partners/ajio-icon.png", light: false },
+                { name: "Blinkit", domain: "blinkit.com", logo: "assets/partners/blinkit-icon.png", light: false },
+                { name: "Decathlon", domain: "decathlon.in", logo: "assets/partners/decathlon-icon.png", light: false },
+                { name: "Pantaloons", domain: "pantaloons.com", logo: "assets/partners/pantaloons-icon.png", light: false },
+                { name: "Shoppers Stop", domain: "shoppersstop.com", logo: "assets/partners/shoppersstop-icon.png", light: false },
+                { name: "Lifestyle", domain: "lifestylestores.com", logo: "assets/partners/lifestyle-icon.png", light: false },
+                { name: "Max", domain: "maxfashion.in", logo: "assets/partners/maxfashion-icon.png", light: false },
+                { name: "Levi's", domain: "levi.com", logo: "assets/partners/levis-icon.png", light: false },
+                { name: "Aurelia", domain: "aurelia.com", logo: "assets/partners/aurelia.svg", light: true },
+                { name: "Skechers", domain: "skechers.in", logo: "assets/partners/skechers-icon.png", light: false },
+                { name: "Jockey", domain: "jockey.com", logo: "assets/partners/jockey-icon.png", light: false },
+                { name: "Tata CLiQ", domain: "tatacliq.com", logo: "assets/partners/tatacliq-icon.png", light: false },
+                { name: "Pepperfry", domain: "pepperfry.com", logo: "assets/partners/pepperfry-icon.png", light: false },
+                { name: "Domino's", domain: "dominos.com", logo: "assets/partners/dominos-icon.png", light: false },
+                { name: "Pizza Hut", domain: "pizzahut.co.in", logo: "assets/partners/pizzahut-icon.png", light: false },
+                { name: "Subway", domain: "subway.com", logo: "assets/partners/subway-icon.png", light: false },
+                { name: "Yatra", domain: "yatra.com", logo: "assets/partners/yatra-icon.png", light: false },
+                { name: "Cleartrip", domain: "cleartrip.com", logo: "assets/partners/cleartrip-icon.png", light: false },
+                { name: "Taj Hotels", domain: "tajhotels.com", logo: "assets/partners/taj-icon.png", light: false },
+                { name: "Lenskart", domain: "lenskart.com", logo: "assets/partners/lenskart-icon.png", light: false },
+                { name: "Titan", domain: "titan.co.in", logo: "assets/partners/titan-icon.png", light: false },
+                { name: "Marks & Spencer", domain: "marksandspencer.in", logo: "assets/partners/marks-icon.png", light: false },
+                { name: "Wildcraft", domain: "wildcraft.com", logo: "assets/partners/wildcraft-icon.png", light: false },
+                { name: "Cinepolis", domain: "cinepolisindia.com", logo: "assets/partners/cinepolis-icon.png", light: false },
+                { name: "Fastrack", domain: "fastrack.in", logo: "assets/partners/fastrack-icon.png", light: false },
+                { name: "Himalaya", domain: "himalayawellness.com", logo: "assets/partners/himalaya-icon.png", light: false },
+                { name: "The Body Shop", domain: "thebodyshop.in", logo: "assets/partners/bodyshop-icon.png", light: false },
+                { name: "Lakme", domain: "lakmeindia.com", logo: "assets/partners/lakme-icon.png", light: false },
+                { name: "Bikanervala", domain: "bikanervala.com", logo: "assets/partners/bikanervala-icon.png", light: false },
+                { name: "Barbeque Nation", domain: "barbequenation.com", logo: "assets/partners/bbq-icon.png", light: false }
+            ];
+            var track = document.getElementById("partners-track");
+            function buildSet(hideFromAssistiveTech) {
+                var set = document.createElement("div");
+                set.className = "partners-set";
+                if (hideFromAssistiveTech) set.setAttribute("aria-hidden", "true");
+                brands.forEach(function (brand) {
+                    var card = document.createElement("div");
+                    card.className = "partner-card";
+                    var img = document.createElement("img");
+                    img.alt = hideFromAssistiveTech ? "" : brand.name;
+                    if (brand.light) img.className = "mark-light";
+                    img.src = "https://logo.clearbit.com/" + brand.domain;
+                    img.addEventListener("error", function onFail() {
+                        img.removeEventListener("error", onFail);
+                        img.src = brand.logo;
+                        if (!brand.light) img.classList.remove("mark-light");
+                    });
+                    var label = document.createElement("span");
+                    label.textContent = brand.name;
+                    card.appendChild(img);
+                    card.appendChild(label);
+                    set.appendChild(card);
+                });
+                return set;
+            }
+            track.appendChild(buildSet(false));
+            track.appendChild(buildSet(true));
+        })();
+    </script>
+
+    <!-- Customer Testimonials Section -->
+    <section id="testimonials">
+        <div class="section-header">
+            <span>Client Success</span>
+            <h2>What Our Partners Say</h2>
+            <p>Trusted by industry leaders across global markets.</p>
+        </div>
+        <div class="testimonials-grid" id="testimonials-container">
+            <!-- Testimonials populated dynamically via JS (backed by Admin Panel) -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact-box">
+            <div class="contact-info">
+                <span style="color: var(--gold-400); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 0.75rem;">Get in Touch</span>
+                <h2 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Ready to Build Something Exceptional?</h2>
+                <p>Connect with our executive engineering and corporate partnership team to explore collaboration opportunities.</p>
+                
+                <div class="contact-detail">
+                    <div class="contact-icon"><i class="fa-solid fa-globe"></i></div>
+                    <span>ValueNestIndia.com</span>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <a href="mailto:contact@valuenestindia.com">contact@valuenestindia.com</a>
+                </div>
+            </div>
+
+            <form id="contact-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" required class="form-control" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Corporate Email</label>
+                    <input type="email" id="email" required class="form-control" placeholder="name@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="message" rows="4" required class="form-control" placeholder="Tell us about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                    Send Inquiry
+                </button>
+                <div id="form-success">Thank you! Your inquiry has been received. Our team will contact you shortly.</div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="assets/ValueNest Final LOGO.png" alt="Logo" style="height: 32px;">
+                <span style="color: #fff; font-weight: 700; letter-spacing: 0.05em;">VALUENEST TECHNOLOGIES</span>
+            </div>
+            <p>&copy; 2021–2026 ValueNest Technologies (ValueNestIndia.com). All rights reserved.</p>
+            <p style="color: var(--gold-400); font-weight: 600; letter-spacing: 0.05em;">WHERE IDEAS BECOME VALUE</p>
+            <p><a href="admin.html" style="color: var(--text-muted);">Admin desk</a></p>
+        </div>
+    </footer>
+
+    <script src="testimonials.js"></script>
+    <script>
+        (function () {
+            var toggle = document.querySelector(".nav-toggle");
+            var nav = document.getElementById("site-nav");
+            if (toggle && nav) {
+                toggle.addEventListener("click", function () {
+                    var open = nav.classList.toggle("is-open");
+                    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+                    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+                });
+                nav.querySelectorAll("a").forEach(function (link) {
+                    link.addEventListener("click", function () {
+                        nav.classList.remove("is-open");
+                        toggle.setAttribute("aria-expanded", "false");
+                    });
+                });
+            }
+
+            var counters = document.querySelectorAll(".counter");
+            var animated = false;
+            function runCounters() {
+                if (animated) return;
+                animated = true;
+                var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                counters.forEach(function (counter) {
+                    var target = Number(counter.getAttribute("data-target")) || 0;
+                    if (reduce) {
+                        counter.textContent = target.toLocaleString() + "+";
+                        return;
+                    }
+                    var start = performance.now();
+                    var duration = 1400;
+                    function frame(now) {
+                        var progress = Math.min(1, (now - start) / duration);
+                        var eased = 1 - Math.pow(1 - progress, 3);
+                        counter.textContent = Math.round(target * eased).toLocaleString() + "+";
+                        if (progress < 1) requestAnimationFrame(frame);
+                    }
+                    requestAnimationFrame(frame);
+                });
+            }
+            var statsBar = document.querySelector(".stats-bar");
+            if (statsBar && "IntersectionObserver" in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    if (entries.some(function (entry) { return entry.isIntersecting; })) runCounters();
+                }, { threshold: 0.4 });
+                observer.observe(statsBar);
+            } else {
+                runCounters();
+            }
+
+            function firstText(item, keys) {
+                for (var i = 0; i < keys.length; i++) {
+                    var value = item[keys[i]];
+                    if (typeof value === "string" && value.trim()) return value.trim();
+                }
+                return "";
+            }
+
+            function normalizeTestimonial(item) {
+                if (!item || typeof item !== "object") return null;
+                var name = firstText(item, ["name", "author", "fullName", "customer"]);
+                var text = firstText(item, ["text", "review", "quote", "message", "testimonial", "body"]);
+                if (!name || !text) return null;
+                return {
+                    name: name,
+                    designation: String(item.designation == null ? "" : item.designation).trim(),
+                    company: String(item.company == null ? "" : item.company).trim(),
+                    image: typeof item.image === "string" ? item.image : "",
+                    text: text
+                };
+            }
+
+            function readTestimonials() {
+                var saved = [];
+                try {
+                    var parsed = JSON.parse(localStorage.getItem("valuenest_testimonials") || "[]");
+                    if (Array.isArray(parsed)) saved = parsed;
+                } catch (error) {
+                    saved = [];
+                }
+                var permanent = (typeof VALUENEST_TESTIMONIALS !== "undefined" && Array.isArray(VALUENEST_TESTIMONIALS))
+                    ? VALUENEST_TESTIMONIALS
+                    : [];
+                var merged = permanent.concat(saved);
+                var seen = {};
+                var items = [];
+                merged.forEach(function (item) {
+                    var normalized = normalizeTestimonial(item);
+                    if (!normalized) return;
+                    var key = normalized.name.toLowerCase() + "\n" + normalized.text;
+                    if (seen[key]) return;
+                    seen[key] = true;
+                    items.push(normalized);
+                });
+                return items;
+            }
+
+            function safePhoto(url) {
+                if (typeof url !== "string") return "";
+                var trimmed = url.trim();
+                if (/^https:\/\//i.test(trimmed)) return trimmed;
+                if (/^data:image\/[a-z0-9.+-]+;base64,/i.test(trimmed)) return trimmed;
+                return "";
+            }
+
+            function loadTestimonials() {
+                var container = document.getElementById("testimonials-container");
+                if (!container) return;
+                var saved = readTestimonials();
+                container.replaceChildren();
+                if (!saved.length) {
+                    var empty = document.createElement("p");
+                    empty.className = "empty-note";
+                    empty.textContent = "Client notes published from the ValueNest desk appear here.";
+                    container.appendChild(empty);
+                    return;
+                }
+                saved.forEach(function (item) {
+                    try {
+                    var card = document.createElement("article");
+                    card.className = "testimonial-card";
+                    var quote = document.createElement("p");
+                    quote.className = "testimonial-text";
+                    quote.textContent = "\u201C" + (item.text || "") + "\u201D";
+                    var author = document.createElement("div");
+                    author.className = "testimonial-author";
+                    var photo = safePhoto(item.image);
+                    if (photo) {
+                        var img = document.createElement("img");
+                        img.className = "author-img";
+                        img.alt = "";
+                        img.src = photo;
+                        img.addEventListener("error", function () {
+                            var fallback = document.createElement("span");
+                            fallback.className = "avatar-fallback";
+                            fallback.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
+                            img.replaceWith(fallback);
+                        });
+                        author.appendChild(img);
+                    } else {
+                        var mark = document.createElement("span");
+                        mark.className = "avatar-fallback";
+                        mark.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
+                        author.appendChild(mark);
+                    }
+                    var info = document.createElement("div");
+                    info.className = "author-info";
+                    var name = document.createElement("h4");
+                    name.textContent = item.name || "";
+                    var role = document.createElement("p");
+                    role.textContent = [item.designation, item.company].filter(Boolean).join(", ");
+                    info.appendChild(name);
+                    info.appendChild(role);
+                    author.appendChild(info);
+                    card.appendChild(quote);
+                    card.appendChild(author);
+                    container.appendChild(card);
+                    } catch (error) {
+                        return;
+                    }
+                });
+            }
+
+            loadTestimonials();
+            window.addEventListener("storage", function (event) {
+                if (event.key === "valuenest_testimonials") loadTestimonials();
+            });
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) loadTestimonials();
+            });
+
+            var form = document.getElementById("contact-form");
+            var success = document.getElementById("form-success");
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var name = document.getElementById("name").value.trim();
+                var email = document.getElementById("email").value.trim();
+                var message = document.getElementById("message").value.trim();
+                var body = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
+                success.textContent = "Your note is ready in your email app, addressed to contact@valuenestindia.com.";
+                success.style.display = "block";
+                window.location.href = "mailto:contact@valuenestindia.com?subject=" +
+                    encodeURIComponent("ValueNest inquiry from " + name) +
+                    "&body=" + encodeURIComponent(body);
+                form.reset();
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueNest Admin | Testimonial Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy-900: #070d1d;
+            --navy-800: #0b132b;
+            --navy-700: #1c2541;
+            --gold-400: #f1c40f;
+            --gold-500: #d4af37;
+            --gold-600: #aa820a;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--navy-900); color: var(--text-main); padding: 3rem 2rem; min-height: 100vh; }
+        .admin-container { max-width: 800px; margin: 0 auto; background: var(--navy-800); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; padding: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .admin-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem; }
+        h1 { color: var(--gold-400); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; font-size: clamp(1.4rem, 3vw, 2rem); }
+        p.subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+        input, textarea { width: 100%; padding: 0.9rem 1.25rem; border-radius: 12px; background: var(--navy-900); border: 1px solid rgba(212, 175, 55, 0.2); color: #ffffff; font-size: 0.95rem; }
+        input[type="file"] { padding: 0.6rem; cursor: pointer; color: var(--gold-400); }
+        input:focus, textarea:focus { outline: none; border-color: var(--gold-400); }
+        .btn-submit { padding: 1rem 2rem; border-radius: 50px; background: linear-gradient(135deg, var(--gold-400), var(--gold-600)); color: var(--navy-900); font-weight: 700; border: none; cursor: pointer; width: 100%; transition: transform 0.2s; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
+        .btn-submit:hover { transform: translateY(-2px); }
+        .btn-logout { flex-shrink: 0; padding: 0.65rem 1.1rem; border-radius: 50px; background: transparent; color: var(--gold-400); border: 1px solid rgba(212, 175, 55, 0.55); font-weight: 700; cursor: pointer; }
+        .btn-logout:hover { border-color: var(--gold-400); color: #ffffff; box-shadow: 0 0 18px rgba(212, 175, 55, 0.28); }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--gold-400); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        #success-msg { display: none; margin-top: 1rem; padding: 1rem; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; color: #2ecc71; border-radius: 8px; text-align: center; }
+        #login-error { display: none; margin-top: 1rem; padding: 0.9rem 1rem; background: rgba(231, 76, 60, 0.12); border: 1px solid #e74c3c; color: #f5b7b1; border-radius: 8px; text-align: center; }
+        [hidden] { display: none !important; }
+        @media (max-width: 640px) {
+            body { padding: 1.25rem 1rem; }
+            .admin-container { padding: 1.5rem; }
+            .admin-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-gate" class="admin-container">
+        <h1><i class="fa-solid fa-lock"></i> Admin Access</h1>
+        <p class="subtitle">Enter the ValueNest desk password to open the testimonial manager.</p>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="admin-password">Admin Password</label>
+                <input type="password" id="admin-password" required autocomplete="current-password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn-submit">Unlock Dashboard</button>
+            <div id="login-error" role="alert">That password is not recognized.</div>
+        </form>
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Main Website</a>
+    </div>
+
+    <div id="admin-dashboard" class="admin-container" hidden>
+        <div class="admin-header">
+            <h1><i class="fa-solid fa-shield-halved"></i> ValueNest Admin Portal</h1>
+            <button type="button" id="logout-btn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+        <p class="subtitle">Upload customer photo directly from your device and add testimonials live on ValueNestIndia.com.</p>
+
+        <form id="testimonial-form">
+            <div class="form-group">
+                <label>Customer Full Name</label>
+                <input type="text" id="t-name" required placeholder="e.g. Vikram Malhotra">
+            </div>
+            <div class="form-group">
+                <label>Designation / Role</label>
+                <input type="text" id="t-designation" required placeholder="e.g. Chief Executive Officer">
+            </div>
+            <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" id="t-company" required placeholder="e.g. NovaTech Enterprises">
+            </div>
+            <div class="form-group">
+                <label>Upload Customer Photo</label>
+                <input type="file" id="t-image-file" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label>Testimonial Review</label>
+                <textarea id="t-text" rows="4" required placeholder="Write the customer's review here..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Publish Testimonial</button>
+            <div id="success-msg">Testimonial published successfully! It is now live on your website.</div>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Main Website</a>
+    </div>
+
+    <script>
+        const ADMIN_SESSION_KEY = "valuenest_admin_session";
+        const ADMIN_PASSWORD_SHA256 = "cea8b91055c8a0312cbf1e050dd81b466e81b43e651c3096c23d724040d7c3a7";
+
+        function showDashboard() {
+            document.getElementById("login-gate").hidden = true;
+            document.getElementById("admin-dashboard").hidden = false;
+        }
+
+        function showLogin() {
+            document.getElementById("admin-dashboard").hidden = true;
+            document.getElementById("login-gate").hidden = false;
+            document.getElementById("login-error").style.display = "none";
+            document.getElementById("admin-password").value = "";
+        }
+
+        async function sha256Hex(text) {
+            const data = new TextEncoder().encode(text);
+            const digest = await crypto.subtle.digest("SHA-256", data);
+            return [...new Uint8Array(digest)].map(function (byte) {
+                return byte.toString(16).padStart(2, "0");
+            }).join("");
+        }
+
+        function hashesMatch(left, right) {
+            if (left.length !== right.length) return false;
+            let diff = 0;
+            for (let i = 0; i < left.length; i++) diff |= left.charCodeAt(i) ^ right.charCodeAt(i);
+            return diff === 0;
+        }
+
+        if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "1") showDashboard();
+
+        document.getElementById("login-form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const entered = document.getElementById("admin-password").value;
+            const digest = await sha256Hex(entered);
+            if (hashesMatch(digest, ADMIN_PASSWORD_SHA256)) {
+                sessionStorage.setItem(ADMIN_SESSION_KEY, "1");
+                document.getElementById("admin-password").value = "";
+                showDashboard();
+            } else {
+                document.getElementById("login-error").style.display = "block";
+                document.getElementById("admin-password").value = "";
+                document.getElementById("admin-password").focus();
+            }
+        });
+
+        document.getElementById("logout-btn").addEventListener("click", function () {
+            sessionStorage.removeItem(ADMIN_SESSION_KEY);
+            showLogin();
+            document.getElementById("admin-password").focus();
+        });
+
+        document.getElementById('testimonial-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (sessionStorage.getItem(ADMIN_SESSION_KEY) !== "1") {
+                showLogin();
+                return;
+            }
+            const fileInput = document.getElementById('t-image-file');
+            const file = fileInput.files[0];
+
+            function publish(image) {
+                const newItem = {
+                    name: document.getElementById('t-name').value.trim(),
+                    designation: document.getElementById('t-designation').value.trim(),
+                    company: document.getElementById('t-company').value.trim(),
+                    image: image || "",
+                    text: document.getElementById('t-text').value.trim()
+                };
+                if (!newItem.name || !newItem.text) return;
+                let existing = [];
+                try {
+                    const parsed = JSON.parse(localStorage.getItem('valuenest_testimonials') || '[]');
+                    if (Array.isArray(parsed)) existing = parsed;
+                } catch (error) {
+                    existing = [];
+                }
+                existing.unshift(newItem);
+                try {
+                    localStorage.setItem('valuenest_testimonials', JSON.stringify(existing));
+                } catch (error) {
+                    document.getElementById('success-msg').textContent = 'The testimonial could not be stored in this browser. Try again without a large photo.';
+                    document.getElementById('success-msg').style.display = 'block';
+                    return;
+                }
+                document.getElementById('success-msg').textContent = 'Testimonial published successfully! It is now live on your website.';
+                document.getElementById('success-msg').style.display = 'block';
+                document.getElementById('testimonial-form').reset();
+                setTimeout(() => {
+                    document.getElementById('success-msg').style.display = 'none';
+                }, 5000);
+            }
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    publish(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                publish("");
+            }
+        });
+    </script>
+</body>
+</html>
