@@ -358,23 +358,34 @@
         }
 
         /* Testimonials Section */
-        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+            gap: 2rem;
+            align-items: stretch;
+        }
         .testimonial-card {
             background: var(--navy-800); border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;
+            min-width: 0;
         }
         .testimonial-text {
             color: var(--text-muted); font-size: 0.95rem; font-style: italic;
-            margin-bottom: 2rem; max-height: 150px; overflow-x: hidden; overflow-y: auto;
-            padding-right: 0.75rem; scrollbar-gutter: stable;
+            margin: 0 0 2rem; height: auto; max-height: none; overflow: visible;
         }
-        .testimonial-text::-webkit-scrollbar { width: 8px; }
-        .testimonial-text::-webkit-scrollbar-track { background: transparent; }
-        .testimonial-text::-webkit-scrollbar-thumb {
-            background: rgba(212, 175, 55, 0.55); border-radius: 8px;
+        .testimonial-text::before {
+            content: "\201C";
+            display: block;
+            color: var(--gold-400);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 3rem;
+            font-style: normal;
+            line-height: 0.8;
+            margin-bottom: 0.6rem;
         }
-        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
-        .author-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-400); }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; margin-top: auto; }
+        .author-img, .avatar-fallback { width: 50px; height: 50px; flex: 0 0 50px; }
+        .author-img { border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-400); }
         .author-info h4 { font-size: 1rem; font-weight: 700; color: #ffffff; }
         .author-info p { font-size: 0.8rem; color: var(--gold-400); }
 
@@ -941,15 +952,19 @@
             }
 
             function normalizeTestimonial(item) {
-                if (!item || typeof item !== "object") return null;
+                if (!item || typeof item !== "object" || Array.isArray(item)) return null;
                 var name = firstText(item, ["name", "author", "fullName", "customer"]);
-                var text = firstText(item, ["text", "review", "quote", "message", "testimonial", "body"]);
-                if (!name || !text) return null;
+                var text = firstText(item, ["quote", "text", "review", "message", "testimonial", "body"]);
+                var title = firstText(item, ["title"]);
+                if (!title) {
+                    title = [firstText(item, ["designation", "role"]), firstText(item, ["company"])]
+                        .filter(Boolean)
+                        .join(", ");
+                }
                 return {
                     name: name,
-                    designation: String(item.designation == null ? "" : item.designation).trim(),
-                    company: String(item.company == null ? "" : item.company).trim(),
-                    image: typeof item.image === "string" ? item.image : "",
+                    title: title,
+                    image: firstText(item, ["image", "photo", "avatar", "picture", "src"]),
                     text: text
                 };
             }
@@ -957,21 +972,14 @@
             function safePhoto(url) {
                 if (typeof url !== "string") return "";
                 var trimmed = url.trim();
-                if (/^https:\/\//i.test(trimmed)) return trimmed;
-                if (/^data:image\/[a-z0-9.+-]+;base64,/i.test(trimmed)) return trimmed;
-                if (/^(?:\.\/)?assets\/[a-z0-9_./-]+\.(?:png|jpe?g|webp|gif|svg)$/i.test(trimmed)) return trimmed;
-                return "";
-            }
-
-            function isRemovedPerson(item) {
-                var name = item.name.toLowerCase().replace(/\s+/g, " ");
-                var blob = (item.name + " " + item.designation + " " + item.company + " " + item.text).toLowerCase();
-                if (name === "virendra pal singh") return true;
-                if (blob.indexOf("british airways") !== -1) return true;
-                return false;
+                if (!trimmed || /^(javascript|vbscript):/i.test(trimmed)) return "";
+                return trimmed;
             }
 
             function readTestimonials() {
+                var permanent = (typeof VALUENEST_TESTIMONIALS !== "undefined" && Array.isArray(VALUENEST_TESTIMONIALS))
+                    ? VALUENEST_TESTIMONIALS
+                    : [];
                 var saved = [];
                 try {
                     var parsed = JSON.parse(localStorage.getItem("valuenest_testimonials") || "[]");
@@ -979,16 +987,12 @@
                 } catch (error) {
                     saved = [];
                 }
-                var permanent = (typeof VALUENEST_TESTIMONIALS !== "undefined" && Array.isArray(VALUENEST_TESTIMONIALS))
-                    ? VALUENEST_TESTIMONIALS
-                    : [];
-                var seen = {};
                 var items = [];
-                saved.concat(permanent).forEach(function (item) {
+                var seen = {};
+                permanent.concat(saved).forEach(function (item) {
                     var normalized = normalizeTestimonial(item);
-                    if (!normalized || isRemovedPerson(normalized)) return;
-                    if (!safePhoto(normalized.image)) return;
-                    var key = normalized.name.toLowerCase();
+                    if (!normalized) return;
+                    var key = normalized.name + "\n" + normalized.text + "\n" + normalized.title;
                     if (seen[key]) return;
                     seen[key] = true;
                     items.push(normalized);
@@ -1014,25 +1018,34 @@
                     card.className = "testimonial-card";
                     var quote = document.createElement("p");
                     quote.className = "testimonial-text";
-                    quote.textContent = "\u201C" + (item.text || "") + "\u201D";
+                    quote.textContent = item.text || "";
                     var author = document.createElement("div");
                     author.className = "testimonial-author";
                     var photo = safePhoto(item.image);
-                    if (!photo) return;
-                    var img = document.createElement("img");
-                    img.className = "author-img";
-                    img.alt = "";
-                    img.src = photo;
-                    img.addEventListener("error", function () {
-                        card.remove();
-                    });
-                    author.appendChild(img);
+                    if (photo) {
+                        var img = document.createElement("img");
+                        img.className = "author-img";
+                        img.alt = "";
+                        img.src = photo;
+                        img.addEventListener("error", function () {
+                            var fallback = document.createElement("span");
+                            fallback.className = "avatar-fallback";
+                            fallback.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
+                            img.replaceWith(fallback);
+                        });
+                        author.appendChild(img);
+                    } else {
+                        var mark = document.createElement("span");
+                        mark.className = "avatar-fallback";
+                        mark.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
+                        author.appendChild(mark);
+                    }
                     var info = document.createElement("div");
                     info.className = "author-info";
                     var name = document.createElement("h4");
                     name.textContent = item.name || "";
                     var role = document.createElement("p");
-                    role.textContent = [item.designation, item.company].filter(Boolean).join(", ");
+                    role.textContent = item.title || [item.designation, item.company].filter(Boolean).join(", ");
                     info.appendChild(name);
                     info.appendChild(role);
                     author.appendChild(info);
