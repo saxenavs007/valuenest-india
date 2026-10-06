@@ -358,16 +358,24 @@
         }
 
         /* Testimonials Section */
+        #testimonials {
+            height: auto;
+            max-height: none;
+            overflow: visible;
+        }
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-            gap: 2rem;
-            align-items: stretch;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 1.75rem;
+            align-items: start;
+            height: auto;
+            max-height: none;
+            overflow: visible;
         }
         .testimonial-card {
             background: var(--navy-800); border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;
-            min-width: 0;
+            border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column;
+            min-width: 0; height: auto; max-height: none; overflow: visible;
         }
         .testimonial-text {
             color: var(--text-muted); font-size: 0.95rem; font-style: italic;
@@ -979,28 +987,10 @@
                 return value;
             }
 
-            function reviewsFromFile() {
+            function allTestimonials() {
                 var list = window.VALUENEST_TESTIMONIALS;
-                var permanent = Array.isArray(list) ? list.slice() : [];
-                var saved = [];
-                try {
-                    var parsed = JSON.parse(localStorage.getItem("valuenest_testimonials") || "[]");
-                    if (Array.isArray(parsed)) saved = parsed;
-                } catch (error) {
-                    saved = [];
-                }
-                var items = [];
-                var seen = {};
-                permanent.concat(saved).forEach(function (item) {
-                    if (!item || typeof item !== "object") return;
-                    var key = textOf(item, ["name", "author"]) + "\n"
-                        + textOf(item, ["quote", "text", "review", "message", "body"]) + "\n"
-                        + (textOf(item, ["title"]) || textOf(item, ["designation", "role"]));
-                    if (seen[key]) return;
-                    seen[key] = true;
-                    items.push(item);
-                });
-                return items;
+                if (!Array.isArray(list)) return [];
+                return list;
             }
 
             function renderTestimonials() {
@@ -1008,7 +998,7 @@
                     || document.querySelector("#testimonials .testimonials-grid");
                 if (!container) return;
 
-                var reviews = reviewsFromFile();
+                var reviews = allTestimonials();
                 container.replaceChildren();
                 if (!reviews.length) {
                     var empty = document.createElement("p");
@@ -1018,7 +1008,10 @@
                     return;
                 }
 
-                reviews.forEach(function (item) {
+                for (var index = 0; index < reviews.length; index++) {
+                    var item = reviews[index];
+                    if (item == null) item = {};
+                    if (typeof item !== "object") item = { quote: String(item) };
                     var quoteText = textOf(item, ["quote", "text", "review", "message", "body"]);
                     var authorName = textOf(item, ["name", "author", "fullName"]);
                     var roleTitle = textOf(item, ["title"])
@@ -1028,46 +1021,53 @@
                     var card = document.createElement("article");
                     card.className = "testimonial-card";
 
-                    var quote = document.createElement("p");
-                    quote.className = "testimonial-text";
-                    quote.textContent = quoteText;
+                    if (quoteText) {
+                        var quote = document.createElement("p");
+                        quote.className = "testimonial-text";
+                        quote.textContent = quoteText;
+                        card.appendChild(quote);
+                    }
 
                     var author = document.createElement("div");
                     author.className = "testimonial-author";
+                    var initial = (authorName || "V").charAt(0).toUpperCase();
 
                     if (photo) {
                         var img = document.createElement("img");
                         img.className = "author-img";
                         img.alt = authorName;
                         img.src = photo;
+                        img.setAttribute("data-initial", initial);
                         img.addEventListener("error", function () {
                             var fallback = document.createElement("span");
                             fallback.className = "avatar-fallback";
-                            fallback.textContent = (authorName || "V").charAt(0).toUpperCase();
-                            img.replaceWith(fallback);
+                            fallback.textContent = this.getAttribute("data-initial") || "V";
+                            this.replaceWith(fallback);
                         });
                         author.appendChild(img);
                     } else {
                         var mark = document.createElement("span");
                         mark.className = "avatar-fallback";
-                        mark.textContent = (authorName || "V").charAt(0).toUpperCase();
+                        mark.textContent = initial;
                         author.appendChild(mark);
                     }
 
                     var info = document.createElement("div");
                     info.className = "author-info";
-                    var name = document.createElement("h4");
-                    name.textContent = authorName;
-                    var role = document.createElement("p");
-                    role.textContent = roleTitle;
-                    info.appendChild(name);
-                    info.appendChild(role);
+                    if (authorName) {
+                        var name = document.createElement("h4");
+                        name.textContent = authorName;
+                        info.appendChild(name);
+                    }
+                    if (roleTitle) {
+                        var role = document.createElement("p");
+                        role.textContent = roleTitle;
+                        info.appendChild(role);
+                    }
                     author.appendChild(info);
-
-                    card.appendChild(quote);
                     card.appendChild(author);
                     container.appendChild(card);
-                });
+                }
             }
 
             if (document.readyState === "loading") {
