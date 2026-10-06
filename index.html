@@ -943,129 +943,6 @@
                 runCounters();
             }
 
-            function firstText(item, keys) {
-                for (var i = 0; i < keys.length; i++) {
-                    var value = item[keys[i]];
-                    if (typeof value === "string" && value.trim()) return value.trim();
-                }
-                return "";
-            }
-
-            function normalizeTestimonial(item) {
-                if (!item || typeof item !== "object" || Array.isArray(item)) return null;
-                var name = firstText(item, ["name", "author", "fullName", "customer"]);
-                var text = firstText(item, ["quote", "text", "review", "message", "testimonial", "body"]);
-                var title = firstText(item, ["title"]);
-                if (!title) {
-                    title = [firstText(item, ["designation", "role"]), firstText(item, ["company"])]
-                        .filter(Boolean)
-                        .join(", ");
-                }
-                return {
-                    name: name,
-                    title: title,
-                    image: firstText(item, ["image", "photo", "avatar", "picture", "src"]),
-                    text: text
-                };
-            }
-
-            function safePhoto(url) {
-                if (typeof url !== "string") return "";
-                var trimmed = url.trim();
-                if (!trimmed || /^(javascript|vbscript):/i.test(trimmed)) return "";
-                return trimmed;
-            }
-
-            function readTestimonials() {
-                var permanent = (typeof VALUENEST_TESTIMONIALS !== "undefined" && Array.isArray(VALUENEST_TESTIMONIALS))
-                    ? VALUENEST_TESTIMONIALS
-                    : [];
-                var saved = [];
-                try {
-                    var parsed = JSON.parse(localStorage.getItem("valuenest_testimonials") || "[]");
-                    if (Array.isArray(parsed)) saved = parsed;
-                } catch (error) {
-                    saved = [];
-                }
-                var items = [];
-                var seen = {};
-                permanent.concat(saved).forEach(function (item) {
-                    var normalized = normalizeTestimonial(item);
-                    if (!normalized) return;
-                    var key = normalized.name + "\n" + normalized.text + "\n" + normalized.title;
-                    if (seen[key]) return;
-                    seen[key] = true;
-                    items.push(normalized);
-                });
-                return items;
-            }
-
-            function loadTestimonials() {
-                var container = document.getElementById("testimonials-container");
-                if (!container) return;
-                var saved = readTestimonials();
-                container.replaceChildren();
-                if (!saved.length) {
-                    var empty = document.createElement("p");
-                    empty.className = "empty-note";
-                    empty.textContent = "Client notes published from the ValueNest desk appear here.";
-                    container.appendChild(empty);
-                    return;
-                }
-                saved.forEach(function (item) {
-                    try {
-                    var card = document.createElement("article");
-                    card.className = "testimonial-card";
-                    var quote = document.createElement("p");
-                    quote.className = "testimonial-text";
-                    quote.textContent = item.text || "";
-                    var author = document.createElement("div");
-                    author.className = "testimonial-author";
-                    var photo = safePhoto(item.image);
-                    if (photo) {
-                        var img = document.createElement("img");
-                        img.className = "author-img";
-                        img.alt = "";
-                        img.src = photo;
-                        img.addEventListener("error", function () {
-                            var fallback = document.createElement("span");
-                            fallback.className = "avatar-fallback";
-                            fallback.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
-                            img.replaceWith(fallback);
-                        });
-                        author.appendChild(img);
-                    } else {
-                        var mark = document.createElement("span");
-                        mark.className = "avatar-fallback";
-                        mark.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
-                        author.appendChild(mark);
-                    }
-                    var info = document.createElement("div");
-                    info.className = "author-info";
-                    var name = document.createElement("h4");
-                    name.textContent = item.name || "";
-                    var role = document.createElement("p");
-                    role.textContent = item.title || [item.designation, item.company].filter(Boolean).join(", ");
-                    info.appendChild(name);
-                    info.appendChild(role);
-                    author.appendChild(info);
-                    card.appendChild(quote);
-                    card.appendChild(author);
-                    container.appendChild(card);
-                    } catch (error) {
-                        return;
-                    }
-                });
-            }
-
-            loadTestimonials();
-            window.addEventListener("storage", function (event) {
-                if (event.key === "valuenest_testimonials") loadTestimonials();
-            });
-            document.addEventListener("visibilitychange", function () {
-                if (!document.hidden) loadTestimonials();
-            });
-
             var form = document.getElementById("contact-form");
             var success = document.getElementById("form-success");
             form.addEventListener("submit", function (event) {
@@ -1081,6 +958,123 @@
                     "&body=" + encodeURIComponent(body);
                 form.reset();
             });
+        })();
+    </script>
+    <script>
+        (function () {
+            function textOf(item, keys) {
+                if (!item) return "";
+                for (var i = 0; i < keys.length; i++) {
+                    var value = item[keys[i]];
+                    if (value == null) continue;
+                    var text = String(value).trim();
+                    if (text) return text;
+                }
+                return "";
+            }
+
+            function photoOf(item) {
+                var value = textOf(item, ["image", "photo", "avatar", "picture", "src"]);
+                if (!value || /^(javascript|vbscript):/i.test(value)) return "";
+                return value;
+            }
+
+            function reviewsFromFile() {
+                var list = window.VALUENEST_TESTIMONIALS;
+                var permanent = Array.isArray(list) ? list.slice() : [];
+                var saved = [];
+                try {
+                    var parsed = JSON.parse(localStorage.getItem("valuenest_testimonials") || "[]");
+                    if (Array.isArray(parsed)) saved = parsed;
+                } catch (error) {
+                    saved = [];
+                }
+                var items = [];
+                var seen = {};
+                permanent.concat(saved).forEach(function (item) {
+                    if (!item || typeof item !== "object") return;
+                    var key = textOf(item, ["name", "author"]) + "\n"
+                        + textOf(item, ["quote", "text", "review", "message", "body"]) + "\n"
+                        + (textOf(item, ["title"]) || textOf(item, ["designation", "role"]));
+                    if (seen[key]) return;
+                    seen[key] = true;
+                    items.push(item);
+                });
+                return items;
+            }
+
+            function renderTestimonials() {
+                var container = document.getElementById("testimonials-container")
+                    || document.querySelector("#testimonials .testimonials-grid");
+                if (!container) return;
+
+                var reviews = reviewsFromFile();
+                container.replaceChildren();
+                if (!reviews.length) {
+                    var empty = document.createElement("p");
+                    empty.className = "empty-note";
+                    empty.textContent = "Client notes published from the ValueNest desk appear here.";
+                    container.appendChild(empty);
+                    return;
+                }
+
+                reviews.forEach(function (item) {
+                    var quoteText = textOf(item, ["quote", "text", "review", "message", "body"]);
+                    var authorName = textOf(item, ["name", "author", "fullName"]);
+                    var roleTitle = textOf(item, ["title"])
+                        || [textOf(item, ["designation", "role"]), textOf(item, ["company"])].filter(Boolean).join(", ");
+                    var photo = photoOf(item);
+
+                    var card = document.createElement("article");
+                    card.className = "testimonial-card";
+
+                    var quote = document.createElement("p");
+                    quote.className = "testimonial-text";
+                    quote.textContent = quoteText;
+
+                    var author = document.createElement("div");
+                    author.className = "testimonial-author";
+
+                    if (photo) {
+                        var img = document.createElement("img");
+                        img.className = "author-img";
+                        img.alt = authorName;
+                        img.src = photo;
+                        img.addEventListener("error", function () {
+                            var fallback = document.createElement("span");
+                            fallback.className = "avatar-fallback";
+                            fallback.textContent = (authorName || "V").charAt(0).toUpperCase();
+                            img.replaceWith(fallback);
+                        });
+                        author.appendChild(img);
+                    } else {
+                        var mark = document.createElement("span");
+                        mark.className = "avatar-fallback";
+                        mark.textContent = (authorName || "V").charAt(0).toUpperCase();
+                        author.appendChild(mark);
+                    }
+
+                    var info = document.createElement("div");
+                    info.className = "author-info";
+                    var name = document.createElement("h4");
+                    name.textContent = authorName;
+                    var role = document.createElement("p");
+                    role.textContent = roleTitle;
+                    info.appendChild(name);
+                    info.appendChild(role);
+                    author.appendChild(info);
+
+                    card.appendChild(quote);
+                    card.appendChild(author);
+                    container.appendChild(card);
+                });
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", renderTestimonials);
+            } else {
+                renderTestimonials();
+            }
         })();
     </script>
 </body>
