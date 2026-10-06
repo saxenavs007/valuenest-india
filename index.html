@@ -954,6 +954,23 @@
                 };
             }
 
+            function safePhoto(url) {
+                if (typeof url !== "string") return "";
+                var trimmed = url.trim();
+                if (/^https:\/\//i.test(trimmed)) return trimmed;
+                if (/^data:image\/[a-z0-9.+-]+;base64,/i.test(trimmed)) return trimmed;
+                if (/^(?:\.\/)?assets\/[a-z0-9_./-]+\.(?:png|jpe?g|webp|gif|svg)$/i.test(trimmed)) return trimmed;
+                return "";
+            }
+
+            function isRemovedPerson(item) {
+                var name = item.name.toLowerCase().replace(/\s+/g, " ");
+                var blob = (item.name + " " + item.designation + " " + item.company + " " + item.text).toLowerCase();
+                if (name === "virendra pal singh") return true;
+                if (blob.indexOf("british airways") !== -1) return true;
+                return false;
+            }
+
             function readTestimonials() {
                 var saved = [];
                 try {
@@ -965,26 +982,18 @@
                 var permanent = (typeof VALUENEST_TESTIMONIALS !== "undefined" && Array.isArray(VALUENEST_TESTIMONIALS))
                     ? VALUENEST_TESTIMONIALS
                     : [];
-                var merged = permanent.concat(saved);
                 var seen = {};
                 var items = [];
-                merged.forEach(function (item) {
+                saved.concat(permanent).forEach(function (item) {
                     var normalized = normalizeTestimonial(item);
-                    if (!normalized) return;
-                    var key = normalized.name.toLowerCase() + "\n" + normalized.text;
+                    if (!normalized || isRemovedPerson(normalized)) return;
+                    if (!safePhoto(normalized.image)) return;
+                    var key = normalized.name.toLowerCase();
                     if (seen[key]) return;
                     seen[key] = true;
                     items.push(normalized);
                 });
                 return items;
-            }
-
-            function safePhoto(url) {
-                if (typeof url !== "string") return "";
-                var trimmed = url.trim();
-                if (/^https:\/\//i.test(trimmed)) return trimmed;
-                if (/^data:image\/[a-z0-9.+-]+;base64,/i.test(trimmed)) return trimmed;
-                return "";
             }
 
             function loadTestimonials() {
@@ -1009,24 +1018,15 @@
                     var author = document.createElement("div");
                     author.className = "testimonial-author";
                     var photo = safePhoto(item.image);
-                    if (photo) {
-                        var img = document.createElement("img");
-                        img.className = "author-img";
-                        img.alt = "";
-                        img.src = photo;
-                        img.addEventListener("error", function () {
-                            var fallback = document.createElement("span");
-                            fallback.className = "avatar-fallback";
-                            fallback.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
-                            img.replaceWith(fallback);
-                        });
-                        author.appendChild(img);
-                    } else {
-                        var mark = document.createElement("span");
-                        mark.className = "avatar-fallback";
-                        mark.textContent = (item.name || "V").trim().charAt(0).toUpperCase();
-                        author.appendChild(mark);
-                    }
+                    if (!photo) return;
+                    var img = document.createElement("img");
+                    img.className = "author-img";
+                    img.alt = "";
+                    img.src = photo;
+                    img.addEventListener("error", function () {
+                        card.remove();
+                    });
+                    author.appendChild(img);
                     var info = document.createElement("div");
                     info.className = "author-info";
                     var name = document.createElement("h4");
