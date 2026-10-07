@@ -842,9 +842,7 @@
             <h2>What Our Partners Say</h2>
             <p>Trusted by industry leaders across global markets.</p>
         </div>
-        <div class="testimonials-grid" id="testimonials-container">
-            <!-- Testimonials populated dynamically via JS (backed by Admin Panel) -->
-        </div>
+        <div class="testimonials-grid" id="testimonials-container"></div>
     </section>
 
     <!-- Contact Section -->
@@ -987,10 +985,74 @@
                 return value;
             }
 
-            function allTestimonials() {
-                var list = window.VALUENEST_TESTIMONIALS;
-                if (!Array.isArray(list)) return [];
+            function asList(value) {
+                if (Array.isArray(value)) return value.filter(function (item) { return item != null; });
+                if (value && typeof value === "object") return [value];
+                if (typeof value === "string") {
+                    var trimmed = value.trim();
+                    if (!trimmed) return [];
+                    try {
+                        return asList(JSON.parse(trimmed));
+                    } catch (error) {
+                        return [];
+                    }
+                }
+                return [];
+            }
+
+            function fileTestimonials() {
+                var list = [];
+                try {
+                    if (typeof VALUENEST_TESTIMONIALS !== "undefined") list = asList(VALUENEST_TESTIMONIALS);
+                } catch (error) {
+                    list = [];
+                }
+                if (!list.length) {
+                    try {
+                        list = asList(window.VALUENEST_TESTIMONIALS);
+                    } catch (error) {
+                        list = [];
+                    }
+                }
                 return list;
+            }
+
+            function storedTestimonials() {
+                var saved = [];
+                var keys = ["valuenest_testimonials"];
+                try {
+                    for (var i = 0; i < localStorage.length; i++) {
+                        var key = localStorage.key(i);
+                        if (!key || keys.indexOf(key) !== -1) continue;
+                        if (/testimonial/i.test(key)) keys.push(key);
+                    }
+                } catch (error) {
+                    keys = ["valuenest_testimonials"];
+                }
+                keys.forEach(function (key) {
+                    try {
+                        saved = saved.concat(asList(localStorage.getItem(key)));
+                    } catch (error) {
+                        return;
+                    }
+                });
+                return saved;
+            }
+
+            function allTestimonials() {
+                var fromFile = [];
+                var fromAdmin = [];
+                try {
+                    fromFile = fileTestimonials();
+                } catch (error) {
+                    fromFile = [];
+                }
+                try {
+                    fromAdmin = storedTestimonials();
+                } catch (error) {
+                    fromAdmin = [];
+                }
+                return fromFile.concat(fromAdmin);
             }
 
             function renderTestimonials() {
@@ -1075,6 +1137,12 @@
             } else {
                 renderTestimonials();
             }
+            window.addEventListener("storage", function (event) {
+                if (!event.key || /testimonial/i.test(event.key)) renderTestimonials();
+            });
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) renderTestimonials();
+            });
         })();
     </script>
 </body>
